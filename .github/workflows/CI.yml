@@ -27,5 +27,5 @@ jobs:
         run: echo '${{github.ref}} -  ${{github.repository}}'
       
       - name: Build the trweb docker image
-        working-directory: ./apps/trweb
+        working-directory: .
         run: docker build . --file Dockerfile --tag '${{github.repository}}:${{github.sha}}' --tag '${{github.repository}}:latest'
