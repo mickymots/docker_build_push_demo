@@ -23,9 +23,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         
-      - name: Echo variable
-        run: echo '${{github.ref}} -  ${{github.repository}}'
+      -
+        name: Login to GitHub Container Registry
+        uses: docker/login-action@v1 
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       
-      - name: Build the trweb docker image
-        working-directory: .
-        run: docker build . --file Dockerfile --tag '${{github.repository}}:${{github.sha}}' --tag '${{github.repository}}:latest'
+      -
+        name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ github.repository_owner }}/trweb:latest
+            ${{ github.repository_owner }}/trweb:1.0.0
+
+      -
+        name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
