@@ -1,0 +1,32 @@
+version: "3.1"
+services:
+
+  # trsync:
+  #   container_name: trsync
+  #   hostname: trsync
+  #   image: gabbarsingh/trsync
+  #   stdin_open: true 
+  #   tty: true
+  #   environment:
+  #     - APP_DIR
+  #   volumes:
+  #     # - $APP_DIR:/applications
+  #     - $DATA_DIR:/data
+     
+  #   depends_on:
+  #     - redis
+
+  trweb:
+    container_name: trweb-demo
+    hostname: trweb-demo
+    image: trweb-demo
+    # volumes:
+      # - $APP_DIR:/applications
+      # - $DATA_DIR:/data
+    depends_on:
+      - redis
+    ports:
+      - "5000:5000"
+
+  redis:
+    image: "redis:alpine"
